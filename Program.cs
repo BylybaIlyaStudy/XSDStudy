@@ -59,14 +59,7 @@ namespace Infotecs.ConsoleApp3
             string xml = Serialize(root);
             File.WriteAllText($"{path}Output.xml", xml);
 
-            XmlReaderSettings ordersSettings = new XmlReaderSettings();
-
-            ordersSettings.ValidationType = ValidationType.Schema;
-            ordersSettings.Schemas.Add(null, $"{path}XMLSchema1.xsd");
-            ordersSettings.ValidationEventHandler += new ValidationEventHandler(OrdersSettingsValidationEventHandler);
-
-            XmlReader reader = XmlReader.Create(new StreamReader($"{path}Output.xml"), ordersSettings);
-            while (reader.Read()) ;
+            XMLValidate();
 
             if (errors.Length == 0)
             {
@@ -92,6 +85,18 @@ namespace Infotecs.ConsoleApp3
 
             xmlserializer.Serialize(writer, sourceObject);
             return stringWriter.ToString();
+        }
+
+        private static void XMLValidate()
+        {
+            XmlReaderSettings ordersSettings = new XmlReaderSettings();
+
+            ordersSettings.ValidationType = ValidationType.Schema;
+            ordersSettings.Schemas.Add(null, $"{path}XMLSchema1.xsd");
+            ordersSettings.ValidationEventHandler += new ValidationEventHandler(OrdersSettingsValidationEventHandler);
+
+            XmlReader reader = XmlReader.Create(new StreamReader($"{path}Output.xml"), ordersSettings);
+            while (reader.Read()) ;
         }
 
         private static void OrdersSettingsValidationEventHandler(object sender, ValidationEventArgs e)
