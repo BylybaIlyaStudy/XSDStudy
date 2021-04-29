@@ -59,13 +59,13 @@ namespace Infotecs.ConsoleApp3
 
             var xml = Serialize(root);
             Console.WriteLine(xml);
-            File.WriteAllText(path + "Output.xml", xml);
+            File.WriteAllText($"{path}Output.xml", xml);
 
             XmlReaderSettings ordersSettings = new XmlReaderSettings { ValidationType = ValidationType.Schema };
-            ordersSettings.Schemas.Add(null, path + "XMLSchema1.xsd");
+            ordersSettings.Schemas.Add(null, $"{path}XMLSchema1.xsd");
             ordersSettings.ValidationEventHandler += new ValidationEventHandler(OrdersSettingsValidationEventHandler);
 
-            XmlReader reader = XmlReader.Create(new StreamReader(path + "Output.xml"), ordersSettings);
+            XmlReader reader = XmlReader.Create(new StreamReader($"{path}Output.xml"), ordersSettings);
             while (reader.Read()) ;
 
             if (errors.Length == 0)
