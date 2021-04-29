@@ -12,8 +12,7 @@ namespace Infotecs.ConsoleApp3
         private static string errors = String.Empty;
         private static string path = "C:/Users/bylyba.ilia/source/repos/ConsoleApp3/ConsoleApp3/";
 
-
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var customer = new CustomerType
             {
@@ -97,7 +96,7 @@ namespace Infotecs.ConsoleApp3
             }
         }
 
-        static void ordersSettingsValidationEventHandler(object sender, ValidationEventArgs e)
+        private static void ordersSettingsValidationEventHandler(object sender, ValidationEventArgs e)
         {
             if (e.Severity == XmlSeverityType.Warning)
             {
