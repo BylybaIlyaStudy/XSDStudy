@@ -10,6 +10,8 @@ namespace Infotecs.ConsoleApp3
     class Program
     {
         private static string errors = String.Empty;
+        private static string path = "C:/Users/bylyba.ilia/source/repos/ConsoleApp3/ConsoleApp3/";
+
 
         static void Main(string[] args)
         {
@@ -59,14 +61,14 @@ namespace Infotecs.ConsoleApp3
 
             var xml = Serialize(root);
             Console.WriteLine(xml);
-            File.WriteAllText("Output.xml", xml, Encoding.Unicode);
+            File.WriteAllText(path + "Output.xml", xml, Encoding.Unicode);
 
             XmlReaderSettings ordersSettings = new XmlReaderSettings();
-            ordersSettings.Schemas.Add(null, "C:/Users/bylyba.ilia/source/repos/ConsoleApp3/ConsoleApp3/XMLSchema1.xsd");
+            ordersSettings.Schemas.Add(null, path + "XMLSchema1.xsd");
             ordersSettings.ValidationType = ValidationType.Schema;
             ordersSettings.ValidationEventHandler += new ValidationEventHandler(ordersSettingsValidationEventHandler);
 
-            XmlReader reader = XmlReader.Create(new StreamReader("Output.xml"), ordersSettings);
+            XmlReader reader = XmlReader.Create(new StreamReader(path + "Output.xml"), ordersSettings);
             while (reader.Read());
 
             if (errors.Length == 0) Console.WriteLine("\nXML is valid.");
