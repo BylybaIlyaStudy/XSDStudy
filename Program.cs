@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -8,10 +9,9 @@ namespace Infotecs.ConsoleApp3
 {
     class Program
     {
-        private static string errors = string.Empty;
-        private static readonly string path = "C:/Users/bylyba.ilia/source/repos/ConsoleApp3/ConsoleApp3/";
+        private StringBuilder errors = new StringBuilder();
 
-        private static readonly CustomerType customer = new CustomerType
+        private readonly CustomerType customer = new CustomerType
         {
             CustomerID = "GREAL",
             CompanyName = "Great Lakes Food Market",
@@ -28,7 +28,7 @@ namespace Infotecs.ConsoleApp3
                 Country = "USA"
             }
         };
-        private static readonly OrderType order = new OrderType
+        private readonly OrderType order = new OrderType
         {
             CustomerID = "GREAL",
             EmployeeID = "6",
@@ -48,31 +48,33 @@ namespace Infotecs.ConsoleApp3
             }
         };
 
-        public static void Main()
+        public static void Main(string[] args)
         {
+            var program = new Program();
+
             Root root = new Root
             {
-                Customers = new CustomerType[] { customer },
-                Orders = new OrderType[] { order }
+                Customers = new CustomerType[] { program.customer },
+                Orders = new OrderType[] { program.order }
             };
 
-            string xml = Serialize(root);
-            File.WriteAllText($"{path}Output.xml", xml);
+            string xml = program.Serialize(root);
+            File.WriteAllText($"{args[0]}Output.xml", xml);
 
-            XMLValidate();
+            program.XMLValidate(args[0]);
 
-            if (errors.Length == 0)
+            if (program.errors.Length != 0)
             {
-                Console.WriteLine("\nXML is VALID.");
+                Console.WriteLine("XML is INVALID");
+                Console.WriteLine(program.errors);
+
+                return;
             }
-            else
-            {
-                Console.WriteLine("\nXML is INVALID");
-                Console.WriteLine(errors);
-            }
+
+            Console.WriteLine("XML is VALID.");
         }
 
-        private static string Serialize<T>(T sourceObject)
+        private string Serialize<T>(T sourceObject)
         {
             if (sourceObject == null)
             {
@@ -87,7 +89,7 @@ namespace Infotecs.ConsoleApp3
             return stringWriter.ToString();
         }
 
-        private static void XMLValidate()
+        private void XMLValidate(string path)
         {
             XmlReaderSettings ordersSettings = new XmlReaderSettings();
 
@@ -99,17 +101,17 @@ namespace Infotecs.ConsoleApp3
             while (reader.Read()) ;
         }
 
-        private static void OrdersSettingsValidationEventHandler(object sender, ValidationEventArgs e)
+        private void OrdersSettingsValidationEventHandler(object sender, ValidationEventArgs e)
         {
             if (e.Severity == XmlSeverityType.Warning)
             {
-                errors += "WARNING: ";
-                errors += e.Message + "\n";
+                errors.Append("WARNING: ");
+                errors.Append(e.Message + Environment.NewLine);
             }
             if (e.Severity == XmlSeverityType.Error)
             {
-                errors += "ERROR: ";
-                errors += e.Message + "\n";
+                errors.Append("ERROR: ");
+                errors.Append(e.Message + Environment.NewLine);
             }
         }
     }
