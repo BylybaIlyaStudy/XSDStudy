@@ -79,14 +79,14 @@ namespace Infotecs.ConsoleApp3
             }
         }
 
-        private static string Serialize<TType>(TType sourceObject)
+        private static string Serialize<T>(T sourceObject)
         {
             if (sourceObject == null)
             {
                 return string.Empty;
             }
 
-            var xmlserializer = new XmlSerializer(typeof(TType));
+            var xmlserializer = new XmlSerializer(typeof(T));
             var stringWriter = new StringWriter();
             var writer = XmlWriter.Create(stringWriter, new XmlWriterSettings() { Indent = true });
 
