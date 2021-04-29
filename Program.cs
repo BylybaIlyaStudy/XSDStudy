@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -10,7 +9,7 @@ namespace Infotecs.ConsoleApp3
     class Program
     {
         private static string errors = String.Empty;
-        private static string path = "C:/Users/bylyba.ilia/source/repos/ConsoleApp3/ConsoleApp3/";
+        private static readonly string path = "C:/Users/bylyba.ilia/source/repos/ConsoleApp3/ConsoleApp3/";
 
         public static void Main()
         {
@@ -64,7 +63,7 @@ namespace Infotecs.ConsoleApp3
 
             XmlReaderSettings ordersSettings = new XmlReaderSettings { ValidationType = ValidationType.Schema };
             ordersSettings.Schemas.Add(null, path + "XMLSchema1.xsd");
-            ordersSettings.ValidationEventHandler += new ValidationEventHandler(ordersSettingsValidationEventHandler);
+            ordersSettings.ValidationEventHandler += new ValidationEventHandler(OrdersSettingsValidationEventHandler);
 
             XmlReader reader = XmlReader.Create(new StreamReader(path + "Output.xml"), ordersSettings);
             while (reader.Read()) ;
@@ -89,14 +88,13 @@ namespace Infotecs.ConsoleApp3
 
             var xmlserializer = new XmlSerializer(typeof(TType));
             var stringWriter = new StringWriter();
-            using (var writer = XmlWriter.Create(stringWriter, new XmlWriterSettings() { Indent = true }))
-            {
-                xmlserializer.Serialize(writer, sourceObject);
-                return stringWriter.ToString();
-            }
+            var writer = XmlWriter.Create(stringWriter, new XmlWriterSettings() { Indent = true });
+
+            xmlserializer.Serialize(writer, sourceObject);
+            return stringWriter.ToString();
         }
 
-        private static void ordersSettingsValidationEventHandler(object sender, ValidationEventArgs e)
+        private static void OrdersSettingsValidationEventHandler(object sender, ValidationEventArgs e)
         {
             if (e.Severity == XmlSeverityType.Warning)
             {
