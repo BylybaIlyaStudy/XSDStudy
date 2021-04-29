@@ -9,6 +9,8 @@ namespace Infotecs.ConsoleApp3
 {
     class Program
     {
+        private static string errors = String.Empty;
+
         static void Main(string[] args)
         {
             var customer = new CustomerType
@@ -55,24 +57,19 @@ namespace Infotecs.ConsoleApp3
                 Orders = new OrderType[] { order }
             };
 
-            //=============================================
-
             var xml = Serialize(root);
-
             Console.WriteLine(xml);
-
             File.WriteAllText("Output.xml", xml, Encoding.Unicode);
-
-            //=============================================
 
             XmlReaderSettings ordersSettings = new XmlReaderSettings();
             ordersSettings.Schemas.Add(null, "C:/Users/bylyba.ilia/source/repos/ConsoleApp3/ConsoleApp3/XMLSchema1.xsd");
             ordersSettings.ValidationType = ValidationType.Schema;
             ordersSettings.ValidationEventHandler += new ValidationEventHandler(ordersSettingsValidationEventHandler);
 
-            XmlReader reader = XmlReader.Create(new StreamReader("Output.xml"), ordersSettings;
-
+            XmlReader reader = XmlReader.Create(new StreamReader("Output.xml"), ordersSettings);
             while (reader.Read());
+
+            if (errors.Length == 0) Console.WriteLine("\nXML is valid.");
         }
 
         private static string Serialize<TType>(TType sourceObject)
@@ -95,13 +92,13 @@ namespace Infotecs.ConsoleApp3
         {
             if (e.Severity == XmlSeverityType.Warning)
             {
-                Console.Write("WARNING: ");
-                Console.WriteLine(e.Message);
+                errors += "WARNING: ";
+                errors += e.Message + "\n";
             }
             else if (e.Severity == XmlSeverityType.Error)
             {
-                Console.Write("ERROR: ");
-                Console.WriteLine(e.Message);
+                errors += "ERROR: ";
+                errors += e.Message + "\n";
             }
         }
     }
