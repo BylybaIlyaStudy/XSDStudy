@@ -60,7 +60,7 @@ namespace Infotecs.ConsoleApp3
 
             var xml = Serialize(root);
             Console.WriteLine(xml);
-            File.WriteAllText(path + "Output.xml", xml, Encoding.Unicode);
+            File.WriteAllText(path + "Output.xml", xml);
 
             XmlReaderSettings ordersSettings = new XmlReaderSettings { ValidationType = ValidationType.Schema };
             ordersSettings.Schemas.Add(null, path + "XMLSchema1.xsd");
