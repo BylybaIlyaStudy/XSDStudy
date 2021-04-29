@@ -12,7 +12,7 @@ namespace Infotecs.ConsoleApp3
         private static string errors = String.Empty;
         private static string path = "C:/Users/bylyba.ilia/source/repos/ConsoleApp3/ConsoleApp3/";
 
-        public static void Main(string[] args)
+        public static void Main()
         {
             var customer = new CustomerType
             {
