@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -63,15 +63,22 @@ namespace Infotecs.ConsoleApp3
             Console.WriteLine(xml);
             File.WriteAllText(path + "Output.xml", xml, Encoding.Unicode);
 
-            XmlReaderSettings ordersSettings = new XmlReaderSettings();
+            XmlReaderSettings ordersSettings = new XmlReaderSettings { ValidationType = ValidationType.Schema };
             ordersSettings.Schemas.Add(null, path + "XMLSchema1.xsd");
-            ordersSettings.ValidationType = ValidationType.Schema;
             ordersSettings.ValidationEventHandler += new ValidationEventHandler(ordersSettingsValidationEventHandler);
 
             XmlReader reader = XmlReader.Create(new StreamReader(path + "Output.xml"), ordersSettings);
-            while (reader.Read());
+            while (reader.Read()) ;
 
-            if (errors.Length == 0) Console.WriteLine("\nXML is valid.");
+            if (errors.Length == 0)
+            {
+                Console.WriteLine("\nXML is VALID.");
+            }
+            else
+            {
+                Console.WriteLine("\nXML is INVALID");
+                Console.WriteLine(errors);
+            }
         }
 
         private static string Serialize<TType>(TType sourceObject)
