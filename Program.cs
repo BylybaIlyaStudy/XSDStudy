@@ -8,7 +8,7 @@ namespace Infotecs.ConsoleApp3
 {
     class Program
     {
-        private static string errors = String.Empty;
+        private static string errors = string.Empty;
         private static readonly string path = "C:/Users/bylyba.ilia/source/repos/ConsoleApp3/ConsoleApp3/";
 
         public static void Main()
