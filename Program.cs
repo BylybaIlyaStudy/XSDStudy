@@ -1,9 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Text;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 
 namespace Infotecs.ConsoleApp3
 {

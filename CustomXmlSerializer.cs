@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -53,7 +52,7 @@ namespace Infotecs.ConsoleApp3
             }
 
             XmlReader reader = XmlReader.Create(new StreamReader(xmlPath), ordersSettings);
-            while (reader.Read());
+            while (reader.Read()) ;
 
             return true;
         }
